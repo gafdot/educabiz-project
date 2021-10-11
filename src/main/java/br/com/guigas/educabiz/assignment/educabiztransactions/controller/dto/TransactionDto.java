@@ -2,11 +2,12 @@ package br.com.guigas.educabiz.assignment.educabiztransactions.controller.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public abstract class TransactionDto {
 
 	private Long id;
-	private LocalDateTime createdDate;
+	private String createdDate;
 	private BigDecimal value;
 
 	public Long getId() {
@@ -17,12 +18,12 @@ public abstract class TransactionDto {
 		this.id = id;
 	}
 
-	public LocalDateTime getCreatedDate() {
+	public String getCreatedDate() {
 		return createdDate;
 	}
 
 	public void setCreatedDate(LocalDateTime createdDate) {
-		this.createdDate = createdDate;
+		this.createdDate = createdDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 	}
 
 	public BigDecimal getValue() {

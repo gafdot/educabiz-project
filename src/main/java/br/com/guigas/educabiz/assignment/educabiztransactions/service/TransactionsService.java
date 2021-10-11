@@ -3,6 +3,7 @@ package br.com.guigas.educabiz.assignment.educabiztransactions.service;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -137,14 +138,26 @@ public class TransactionsService {
 			invoice.setStatus(Status.ISSUED);
 		}
 	}
+
+	public ResponseEntity<InvoiceDto> getInvoice(Long id) {
+		return ResponseEntity.ok(new InvoiceDto(invoiceRepository.findById(id).get()));
+	}
+
+	public ResponseEntity<PaymentDto> getPayment(Long id) {
+		return ResponseEntity.ok(new PaymentDto(paymentRepository.findById(id).get()));
+	}
 }
 
 class DateComparator implements Comparator<OperationDto> {
 	@Override
 	public int compare(OperationDto o1, OperationDto o2) {
-		if (o1.getTransaction().getCreatedDate().isAfter(o2.getTransaction().getCreatedDate())) 
+		LocalDateTime operation1Date = LocalDateTime.parse(
+				o1.getTransaction().getCreatedDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+		LocalDateTime operation2Date = LocalDateTime.parse(
+				o2.getTransaction().getCreatedDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+		if (operation1Date.isAfter(operation2Date)) 
 			return 1;
-		else if (o1.getTransaction().getCreatedDate().isBefore(o2.getTransaction().getCreatedDate())) 
+		else if (operation1Date.isBefore(operation2Date)) 
 			return -1;
 		else 
 			return 0;

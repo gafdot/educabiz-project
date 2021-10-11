@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.guigas.educabiz.assignment.educabiztransactions.controller.dto.InvoiceDto;
-import br.com.guigas.educabiz.assignment.educabiztransactions.controller.dto.PaymentDto;
 import br.com.guigas.educabiz.assignment.educabiztransactions.controller.form.InvoiceForm;
 import br.com.guigas.educabiz.assignment.educabiztransactions.controller.form.PaymentForm;
 import br.com.guigas.educabiz.assignment.educabiztransactions.service.TransactionsService;
@@ -49,8 +48,16 @@ public class TransactionsApiController {
 	}
 	
 	@GetMapping("/invoice")
-	public ResponseEntity<List<InvoiceDto>> listInvoices() {
-		return service.listInvoices();
+	public ResponseEntity<?> listInvoices(Long id) {
+		if(id == null)
+			return service.listInvoices();
+		else
+			return service.getInvoice(id);
+	}
+	
+	@GetMapping("/invoice/{id}")
+	public ResponseEntity<?> getInvoice(@PathVariable Long id) {
+		return service.getInvoice(id);
 	}
 	
 	/*Payment related methods*/
@@ -65,7 +72,15 @@ public class TransactionsApiController {
 	}
 	
 	@GetMapping("/payment")
-	public ResponseEntity<List<PaymentDto>> listPayments() {
-		return service.listPayments();
+	public ResponseEntity<?> listPayments(Long id) {
+		if(id == null)
+			return service.listPayments();
+		else
+			return service.getPayment(id);
+	}
+	
+	@GetMapping("/payment/{id}")
+	public ResponseEntity<?> getPayment(@PathVariable Long id) {
+		return service.getPayment(id);
 	}
 }
